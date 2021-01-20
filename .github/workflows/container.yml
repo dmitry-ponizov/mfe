@@ -12,12 +12,12 @@ defaults:
     working-directory: container
 
 jobs:
-  example-job:
-    name: example
+  build:
     runs-on: ubuntu-latest
+
     steps:
-    - name: log untrusted output
-      run: |
+      - name: log untrusted output
+      - run: |
 
         # disable command workflow processing
         echo "::stop-commands::`echo -n ${{ github.token }} | sha256sum | head -c 64`"
@@ -27,10 +27,6 @@ jobs:
 
         # enable workflow command processing
         echo "::`echo -n ${{ github.token }} | sha256sum | head -c 64`::"
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
       - uses: actions/checkout@v2
       - run: npm install
       - run: npm run build
