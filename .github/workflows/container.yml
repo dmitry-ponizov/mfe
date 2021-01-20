@@ -13,7 +13,7 @@ defaults:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -22,12 +22,18 @@ jobs:
 
       - uses: chrislennon/action-aws-cli@v1.1
       - run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/container/latest
-             echo "::set-env name=PR_AUTHOR::${{ github.event.pull_request.user.login }}"
-             echo "::set-env name=PR_AUTHOR::${{ github.event.issue.user.login }}"
-             echo "PR_AUTHOR=${{ github.event.pull_request.user.login }}" >> $GITHUB_ENV
-             echo "PR_AUTHOR=${{ github.event.issue.user.login }}" >> $GITHUB_ENV
+      
+      - name: log untrusted output
+        run: |
+
+        # disable command workflow processing
+        echo "::stop-commands::`echo -n ${{ github.token }} | sha256sum | head -c 64`"
+
+        # log untrusted output
+        echo "untrusted output"
+
+        # enable workflow command processing
+        echo "::`echo -n ${{ github.token }} | sha256sum | head -c 64`::"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      
