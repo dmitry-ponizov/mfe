@@ -5,6 +5,7 @@ import Landing from "./components/Landing";
 import Pricing from "./components/Pricing";
 
 const App = () => {
+  console.log("sdfsdddd");
   return (
     <div>
       <StylesProvider>
